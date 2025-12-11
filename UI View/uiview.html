@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Aesthetic Showcase — Single File</title>
+  <style>
+    :root{
+      --bg1:#0b1020;
+      --bg2:#071126;
+      --glass:rgba(255,255,255,0.06);
+      --accent1:#7C5CFF;
+      --accent2:#34D399;
+      --text:#e6eef8;
+      --muted:rgba(230,238,248,0.65);
+      --card:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial;background:radial-gradient(1200px 600px at 10% 10%,rgba(124,92,255,0.08),transparent 8%), radial-gradient(900px 400px at 90% 90%,rgba(52,211,153,0.06),transparent 8%), linear-gradient(180deg,var(--bg1),var(--bg2));color:var(--text);-webkit-font-smoothing:antialiased}
+    .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:48px}
+    .card{width:100%;max-width:1100px;background:var(--card);border-radius:20px;padding:28px;backdrop-filter:blur(8px);box-shadow:0 10px 30px rgba(2,6,23,0.6);position:relative;overflow:hidden}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:14px}
+    .logo{width:56px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent1),var(--accent2));box-shadow:0 6px 20px rgba(124,92,255,0.12);font-weight:700;font-size:18px}
+    h1{font-size:20px;margin:0}
+    p.lead{margin:0;color:var(--muted);font-size:13px}
+    .controls{display:flex;gap:10px;align-items:center}
+    .btn{border:0;padding:10px 14px;border-radius:12px;background:linear-gradient(90deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));color:var(--text);cursor:pointer}
+    .primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#021;box-shadow:0 6px 18px rgba(52,211,153,0.06)}
+    main{display:grid;grid-template-columns:1fr 420px;gap:22px;margin-top:18px}
+    .showcase{padding:18px;border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);min-height:420px;display:flex;flex-direction:column;gap:12px}
+    .canvas-wrap{position:relative;flex:1;border-radius:12px;overflow:hidden}
+    canvas#bg{position:absolute;inset:0;width:100%;height:100%}
+    .meta{position:absolute;left:18px;top:18px;padding:8px 12px;border-radius:10px;background:rgba(2,6,23,0.45);backdrop-filter:blur(6px);display:flex;gap:10px;align-items:center}
+    .meta b{font-size:13px}
+    .panels{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+    .mini{padding:12px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);display:flex;flex-direction:column;gap:8px}
+    .mini h4{margin:0;font-size:14px}
+    .mini p{margin:0;font-size:12px;color:var(--muted)}
+    .right{display:flex;flex-direction:column;gap:14px}
+    .card-list{padding:12px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent)}
+    .project{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;background:linear-gradient(90deg,rgba(255,255,255,0.01),transparent)}
+    .dot{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700}
+    .project h5{margin:0;font-size:15px}
+    .project p{margin:0;font-size:12px;color:var(--muted)}
+    footer.info{display:flex;justify-content:space-between;align-items:center;margin-top:16px;color:var(--muted);font-size:13px}
+    .tag{padding:6px 10px;border-radius:999px;font-size:12px;background:rgba(255,255,255,0.03)}
+    @media(max-width:980px){main{grid-template-columns:1fr;}.right{order:2}.showcase{order:1}}
+    @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+    .float{animation:float 4s ease-in-out infinite}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <header>
+        <div class="brand">
+          <div class="logo">AS</div>
+          <div>
+            <h1>Aesthetic Showcase</h1>
+            <p class="lead">One-file project template with interactive gradient particles and cards</p>
+          </div>
+        </div>
+        <div class="controls">
+          <button id="toggle" class="btn">Toggle Mode</button>
+          <button id="download" class="btn primary">Export HTML</button>
+        </div>
+      </header>
+      <main>
+        <section class="showcase">
+          <div class="canvas-wrap">
+            <canvas id="bg"></canvas>
+            <div class="meta">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z" stroke="currentColor" stroke-width="1.2"/></svg>
+              <b id="count">0</b>
+            </div>
+          </div>
+          <div class="panels">
+            <div class="mini">
+              <h4 id="title">Nebula Notes</h4>
+              <p id="desc">Minimal note UI with soft glass, animated background and micro-interactions</p>
+            </div>
+            <div class="mini">
+              <h4 id="tech">HTML · CSS · JS</h4>
+              <p id="tags">Responsive · Accessible · Lightweight</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:8px">
+            <button id="shuffle" class="btn">Shuffle</button>
+            <button id="preview" class="btn primary">Preview Style</button>
+          </div>
+        </section>
+        <aside class="right">
+          <div class="card-list">
+            <div class="project">
+              <div class="dot" style="background:linear-gradient(135deg,var(--accent1),var(--accent2));">N</div>
+              <div>
+                <h5>Nebula Notes</h5>
+                <p>Minimal note layout with card grid</p>
+              </div>
+            </div>
+            <div class="project" style="margin-top:10px">
+              <div class="dot" style="background:linear-gradient(135deg,#FF6B6B,#FFB86B);">V</div>
+              <div>
+                <h5>Velvet Shop</h5>
+                <p>Product gallery with smooth hover</p>
+              </div>
+            </div>
+            <div class="project" style="margin-top:10px">
+              <div class="dot" style="background:linear-gradient(135deg,#00C2FF,#34D399);">A</div>
+              <div>
+                <h5>Aurora Grid</h5>
+                <p>Generative animated backgrounds</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-list float" style="margin-top:12px;padding:14px;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div class="tag">License: MIT</div>
+              <div class="tag">Size: <span id="size">0 KB</span></div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button id="copy" class="btn">Copy</button>
+              <a id="repo" class="btn" href="#">Create Repo</a>
+            </div>
+          </div>
+        </aside>
+      </main>
+      <footer class="info">
+        <div>Designed for GitHub · Drop into any static host</div>
+        <div>Made with HTML · CSS · JS</div>
+      </footer>
+    </div>
+  </div>
+  <script>
+    const canvas=document.getElementById('bg');const ctx=canvas.getContext('2d');let w,h,particles=[];const projects=[{t:'Nebula Notes',d:'Minimal note UI with soft glass'}, {t:'Velvet Shop',d:'Product gallery with micro-interactions'}, {t:'Aurora Grid',d:'Generative animated backgrounds'}, {t:'Echo Player',d:'Audio-reactive particles'}];function resize(){w=canvas.width=canvas.clientWidth;h=canvas.height=canvas.clientHeight}window.addEventListener('resize',resize);resize();class P{constructor(){this.reset()}reset(){this.x=Math.random()*w;this.y=Math.random()*h;this.r=1+Math.random()*3;this.vx=(Math.random()-0.5)*0.6;this.vy=(Math.random()-0.5)*0.6;this.life=40+Math.random()*160;this.max=this.life;this.c=Math.random()<0.5?1:2}update(){this.x+=this.vx;this.y+=this.vy;this.life--;if(this.x<-10)this.x=w+10;if(this.x>w+10)this.x=-10;if(this.y<-10)this.y=h+10;if(this.y>h+10)this.y=-10;if(this.life<0)this.reset()}draw(){const a=this.life/this.max;ctx.beginPath();ctx.fillStyle=this.c===1?`rgba(124,92,255,${0.18*a})`:`rgba(52,211,153,${0.12*a})`;ctx.arc(this.x,this.y,this.r*a,0,Math.PI*2);ctx.fill()}}for(let i=0;i<120;i++)particles.push(new P());function frame(){ctx.clearRect(0,0,w,h);for(let i=0;i<particles.length;i++){particles[i].update();particles[i].draw()}connect();requestAnimationFrame(frame)}function connect(){for(let i=0;i<particles.length;i++){for(let j=i+1;j<particles.length;j++){const a=particles[i],b=particles[j];const dx=a.x-b.x;const dy=a.y-b.y;const d=dx*dx+dy*dy;if(d<1600){const o=1-d/1600;ctx.beginPath();ctx.strokeStyle=`rgba(124,92,255,${0.08*o})`;ctx.lineWidth=1*o;ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()}}}}frame();let mode=0;const elCount=document.getElementById('count');const elTitle=document.getElementById('title');const elDesc=document.getElementById('desc');const elSize=document.getElementById('size');function updateMeta(i){elCount.textContent=i+1;elTitle.textContent=projects[i].t;elDesc.textContent=projects[i].d}let idx=0;updateMeta(idx);document.getElementById('shuffle').addEventListener('click',()=>{idx=(idx+1)%projects.length;updateMeta(idx)});document.getElementById('preview').addEventListener('click',()=>{particles.forEach(p=>{p.vx*=1.5;p.vy*=1.5});setTimeout(()=>{particles.forEach(p=>{p.vx*=0.6;p.vy*=0.6})},900)});document.getElementById('toggle').addEventListener('click',()=>{mode^=1;document.documentElement.style.setProperty('--bg1',mode? '#fffaf0':'#0b1020');document.documentElement.style.setProperty('--bg2',mode? '#fff0f6':'#071126');document.documentElement.style.setProperty('--text',mode? '#081423':'#e6eef8');document.documentElement.style.setProperty('--muted',mode? 'rgba(8,20,35,0.6)':'rgba(230,238,248,0.65)')});function serialize(){return new Blob([document.documentElement.outerHTML],{type:'text/html'})}document.getElementById('download').addEventListener('click',()=>{const url=URL.createObjectURL(serialize());const a=document.createElement('a');a.href=url;a.download='aesthetic-showcase.html';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)});document.getElementById('copy').addEventListener('click',async()=>{const t=document.documentElement.outerHTML;try{await navigator.clipboard.writeText(t);elSize.textContent=Math.round(new Blob([t]).size/1024)+' KB'}catch(e){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();elSize.textContent=Math.round(new Blob([t]).size/1024)+' KB'}});document.getElementById('repo').addEventListener('click',()=>{location.href='https://github.com/new'});
+  </script>
+</body>
+</html>
